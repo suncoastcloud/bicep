@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SunCoast Cloud Consulting</title>
+    <style>
+        * {
+            box-sizing: border-box; /* Use border-box model for all elements */
+            margin: 0; /* Remove the default margin */
+            padding: 0; /* Remove the default padding */
+        }
+        #logo {
+            width: 100px;  
+            height: 100px; 
+            float: left; /* Align the logo to the left */
+        }
+        #header {
+            background-color: #F0F8FF; /* Light blue background color */
+            padding: 20px; /* Add some space around the content */
+            font-family: Arial, Helvetica, sans-serif; /* Use a common font */
+            display: flex; /* Use flexbox layout for the header */
+            align-items: center; /* Align the items vertically */
+            justify-content: space-between; /* Distribute the space evenly */
+        }
+        #header h1 {
+            color: #00008B; /* Dark blue text color */
+            font-size: 36px; /* Increase the font size */
+        }
+        #content {
+            margin: 20px; /* Add some space around the content */
+            font-family: Arial, Helvetica, sans-serif; /* Use a common font */
+            max-width: 800px; /* Limit the width of the content */
+            margin-left: auto; /* Center the content horizontally */
+            margin-right: auto; /* Center the content horizontally */
+        }
+        #content p {
+            font-size: 18px; /* Increase the font size */
+            line-height: 1.5; /* Increase the line height */
+            text-align: justify; /* Align the text to both margins */
+        }
+        #footer {
+            background-color: #F0F8FF; /* Light blue background color */
+            padding: 10px; /* Add some space around the content */
+            font-family: Arial, Helvetica, sans-serif; /* Use a common font */
+            text-align: center; /* Center the text */
+        }
+        #footer a {
+            color: #00008B; /* Dark blue text color */
+            text-decoration: none; /* Remove the underline */
+        }
+        #footer a:hover {
+            color: #F0F8FF; /* Light blue text color on hover */
+        }
+        #instagram { /* Add a new CSS rule for the Instagram icon */
+            width: 50px; /* Set the width to half of the logo */
+            height: 50px; /* Set the height to half of the logo */
+        }
+        #follow { /* Add a new CSS rule for the "Follow us" text */
+            font-family: 'Brush Script MT', cursive; /* Use a nicer font */
+            font-size: 24px; /* Increase the font size */
+            color: #00008B; /* Dark blue text color */
+            margin-right: 10px; /* Add some space to the right of the text */
+        }
+        #map { /* Add a new CSS rule for the map */
+            width: 400px; /* Set the width to 400 pixels */
+            height: 400px; /* Set the height to 400 pixels */
+            margin-left: auto; /* Center the map horizontally */
+            margin-right: auto; /* Center the map horizontally */
+        }
+    </style>
+    <link rel="icon" href="suncoastcloudlogo.jpg"> <!-- Use the logo as a favicon -->
+</head>
+<body>
+    <div id="header">
+        <img src="suncoastcloudlogo.jpg" alt="Logo" id="logo">
+        <h1>SunCoast Cloud Consulting</h1> <!-- Remove Tampa, Florida from the title -->
+        <div id="instagram-link"> <!-- Add a new div element to wrap the text and the icon -->
+            <span id="follow">Follow us</span> <!-- Add the text "Follow us" and assign an id -->
+            <a href="https://www.instagram.com/suncoastcloud" target="_blank"> <!-- Add an Instagram link -->
+                <img src="instagram.png" alt="Instagram" id="instagram"> <!-- Use an Instagram icon and assign an id -->
+            </a>
+        </div>
+    </div>
+    <div id="content">
+        <p>Welcome to SunCoast Cloud Consulting, your trusted partner for cloud solutions. We offer a range of services to help you migrate, optimize, and secure your cloud infrastructure. Whether you need to move your data, applications, or entire business to the cloud, we have the expertise and experience to make it happen. Contact us today for a free consultation and quote.</p>
+    </div>
+    <div id="map"> <!-- Add a new div element to hold the map -->
+        <!-- Use the Maps Embed API to show a map with a marker at Tampa, Florida -->
+        <!-- For more information, see [How to Embed Google Map in HTML](https://www.w3schools.com/graphics/google_maps_basic.asp) -->
+        <iframe src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDGeIrFEH9zM5P1T6k2XEfZgVpcHxJ3b00&q=Tampa,FL" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    <div id="footer">
+        <p>© 2024 SunCoast Cloud Consulting. All rights reserved.</p>
+    </div>
+</body>
+</html>
