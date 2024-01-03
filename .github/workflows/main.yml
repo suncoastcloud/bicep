@@ -22,7 +22,7 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-           az cdn endpoint purge --content-paths  "/*" --profile-name "scc-pub" --name "scc-gmbbgug3ggbag5gj.z02.azurefd.net" --resource-group "scc-infra"
+           az cdn endpoint purge --content-paths  "/*" --profile-name "scc-pub" --name "scc" --resource-group "scc-infra"
 
   # Azure logout
     - name: logout
