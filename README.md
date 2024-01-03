@@ -1,6 +1,6 @@
 # scc-infra
 
-These are the Azure templates that make up the SunCoast Cloud internal infrastructure consisting of the following services:
+These are the Azure templates and files that make up the SunCoast Cloud internal infrastructure consisting of the following services:
 
 -Single static web page hosted in an Azure blob container using the Azure Front door service. 
 Making changes to any of the files under the scc-infra local repository pushes a GitHub Actions workflow that uploads the files to the storage account.
