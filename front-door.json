@@ -1,0 +1,152 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "profiles_scc_pub_name": {
+            "defaultValue": "scc-pub",
+            "type": "String"
+        },
+        "dnszones_suncoastcloud_co_externalid": {
+            "defaultValue": "/subscriptions/a5edabc6-a664-415a-abb8-0ee5d15cf37e/resourceGroups/scc-infra/providers/Microsoft.Network/dnszones/suncoastcloud.co",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Cdn/profiles",
+            "apiVersion": "2022-11-01-preview",
+            "name": "[parameters('profiles_scc_pub_name')]",
+            "location": "Global",
+            "sku": {
+                "name": "Standard_AzureFrontDoor"
+            },
+            "kind": "frontdoor",
+            "properties": {
+                "originResponseTimeoutSeconds": 60,
+                "extendedProperties": {}
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints",
+            "apiVersion": "2022-11-01-preview",
+            "name": "[concat(parameters('profiles_scc_pub_name'), '/scc')]",
+            "location": "Global",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_scc_pub_name'))]"
+            ],
+            "properties": {
+                "enabledState": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups",
+            "apiVersion": "2022-11-01-preview",
+            "name": "[concat(parameters('profiles_scc_pub_name'), '/default-origin-group-b19b8cd0')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_scc_pub_name'))]"
+            ],
+            "properties": {
+                "loadBalancingSettings": {
+                    "sampleSize": 4,
+                    "successfulSamplesRequired": 3,
+                    "additionalLatencyInMilliseconds": 50
+                },
+                "healthProbeSettings": {
+                    "probePath": "/",
+                    "probeRequestType": "HEAD",
+                    "probeProtocol": "Http",
+                    "probeIntervalInSeconds": 100
+                },
+                "sessionAffinityState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/secrets",
+            "apiVersion": "2022-11-01-preview",
+            "name": "[concat(parameters('profiles_scc_pub_name'), '/904b376a-e9d9-4549-b909-ae13b3530d9b-suncoastcloud-co')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_scc_pub_name'))]"
+            ],
+            "properties": {
+                "parameters": {
+                    "type": "ManagedCertificate"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/customdomains",
+            "apiVersion": "2022-11-01-preview",
+            "name": "[concat(parameters('profiles_scc_pub_name'), '/suncoastcloud-co')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_scc_pub_name'))]",
+                "[resourceId('Microsoft.Cdn/profiles/secrets', parameters('profiles_scc_pub_name'), '904b376a-e9d9-4549-b909-ae13b3530d9b-suncoastcloud-co')]"
+            ],
+            "properties": {
+                "hostName": "suncoastcloud.co",
+                "tlsSettings": {
+                    "certificateType": "ManagedCertificate",
+                    "minimumTlsVersion": "TLS12",
+                    "secret": {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/secrets', parameters('profiles_scc_pub_name'), '904b376a-e9d9-4549-b909-ae13b3530d9b-suncoastcloud-co')]"
+                    }
+                },
+                "azureDnsZone": {
+                    "id": "[parameters('dnszones_suncoastcloud_co_externalid')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/origingroups/origins",
+            "apiVersion": "2022-11-01-preview",
+            "name": "[concat(parameters('profiles_scc_pub_name'), '/default-origin-group-b19b8cd0/default-origin')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('profiles_scc_pub_name'), 'default-origin-group-b19b8cd0')]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_scc_pub_name'))]"
+            ],
+            "properties": {
+                "hostName": "sccfiles.z21.web.core.windows.net",
+                "httpPort": 80,
+                "httpsPort": 443,
+                "originHostHeader": "sccfiles.z21.web.core.windows.net",
+                "priority": 1,
+                "weight": 1000,
+                "enabledState": "Enabled",
+                "enforceCertificateNameCheck": true
+            }
+        },
+        {
+            "type": "Microsoft.Cdn/profiles/afdendpoints/routes",
+            "apiVersion": "2022-11-01-preview",
+            "name": "[concat(parameters('profiles_scc_pub_name'), '/scc/default-route')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Cdn/profiles/afdendpoints', parameters('profiles_scc_pub_name'), 'scc')]",
+                "[resourceId('Microsoft.Cdn/profiles', parameters('profiles_scc_pub_name'))]",
+                "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('profiles_scc_pub_name'), 'suncoastcloud-co')]",
+                "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('profiles_scc_pub_name'), 'default-origin-group-b19b8cd0')]"
+            ],
+            "properties": {
+                "customDomains": [
+                    {
+                        "id": "[resourceId('Microsoft.Cdn/profiles/customdomains', parameters('profiles_scc_pub_name'), 'suncoastcloud-co')]"
+                    }
+                ],
+                "originGroup": {
+                    "id": "[resourceId('Microsoft.Cdn/profiles/origingroups', parameters('profiles_scc_pub_name'), 'default-origin-group-b19b8cd0')]"
+                },
+                "ruleSets": [],
+                "supportedProtocols": [
+                    "Http",
+                    "Https"
+                ],
+                "patternsToMatch": [
+                    "/*"
+                ],
+                "forwardingProtocol": "MatchRequest",
+                "linkToDefaultDomain": "Enabled",
+                "httpsRedirect": "Enabled",
+                "enabledState": "Enabled"
+            }
+        }
+    ]
+}
