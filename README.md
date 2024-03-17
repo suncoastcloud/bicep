@@ -1,4 +1,4 @@
-# scc-infra
+# Azure ARM Template and Bicep Samples
 
 These are the Azure templates and files that make up the SunCoast Cloud internal infrastructure consisting of the following services:
 
