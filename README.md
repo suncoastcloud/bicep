@@ -7,4 +7,4 @@ Changes that are made to any of the local files under the scc-infra repository a
 
 -Storage Account for Azure CloudShell and static web page.
 
--Public DNS Zone for suncoastcloud.co.
+-Public DNS Zone for suncoastcloud.co
